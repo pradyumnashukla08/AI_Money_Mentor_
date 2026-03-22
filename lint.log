@@ -1,0 +1,100 @@
+
+> ai-money-mentor@0.1.0 lint
+> eslint
+
+
+D:\hackhathon\AI-Money-Mentor-\src\app\api\auth\[...nextauth]\route.ts
+  9:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\hackhathon\AI-Money-Mentor-\src\app\api\notifications\route.ts
+  6:27  warning  'request' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\hackhathon\AI-Money-Mentor-\src\app\api\profile\route.ts
+  6:27  warning  'request' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\hackhathon\AI-Money-Mentor-\src\app\api\sessions\route.ts
+  6:27  warning  'request' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\hackhathon\AI-Money-Mentor-\src\app\login\page.tsx
+    8:17  warning  'session' is assigned a value but never used                     @typescript-eslint/no-unused-vars
+  269:14  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\hackhathon\AI-Money-Mentor-\src\app\notifications\page.tsx
+  25:60  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\hackhathon\AI-Money-Mentor-\src\app\profile\FinancialProfileForm.tsx
+  52:14  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\hackhathon\AI-Money-Mentor-\src\app\profile\page.tsx
+  132:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\hackhathon\AI-Money-Mentor-\src\app\signup\page.tsx
+  53:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\hackhathon\AI-Money-Mentor-\src\context\ChatContext.tsx
+   51:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\hackhathon\AI-Money-Mentor-\src\context\ChatContext.tsx:51:7
+  49 |         .catch(console.error);
+  50 |     } else {
+> 51 |       setSessions([]);
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  52 |       setMessages([]);
+  53 |       setActiveSessionId(null);
+  54 |     }                                                                                                                                                                                                                                                     react-hooks/set-state-in-effect
+   91:5  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `saveCurrentSession`, but the source dependencies were [activeAgent, activeSessionId, session]. Inferred different dependency than source.
+
+D:\hackhathon\AI-Money-Mentor-\src\context\ChatContext.tsx:91:5
+   89 |
+   90 |   const sendMessage = useCallback(
+>  91 |     (content: string) => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^
+>  92 |       const currentSessionId = activeSessionId || generateId();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  93 |       if (!activeSessionId) setActiveSessionId(currentSessionId);
+      ΓÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 150 |       setIsLoading(true);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 151 |     },
+      | ^^^^^^ Could not preserve existing manual memoization
+  152 |     [activeAgent, activeSessionId, session]
+  153 |   );
+  154 |  react-hooks/preserve-manual-memoization
+  152:5  warning  React Hook useCallback has a missing dependency: 'saveCurrentSession'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/exhaustive-deps
+  156:5  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `saveCurrentSession`, but the source dependencies were [activeAgent, activeSessionId, session]. Inferred different dependency than source.
+
+D:\hackhathon\AI-Money-Mentor-\src\context\ChatContext.tsx:156:5
+  154 |
+  155 |   const handleFileUpload = useCallback(
+> 156 |     (file: File) => {
+      |     ^^^^^^^^^^^^^^^^^
+> 157 |       const currentSessionId = activeSessionId || generateId();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 158 |       if (!activeSessionId) setActiveSessionId(currentSessionId);
+      ΓÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 213 |       setIsLoading(true);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 214 |     },
+      | ^^^^^^ Could not preserve existing manual memoization
+  215 |     [activeAgent, activeSessionId, session]
+  216 |   );
+  217 |      react-hooks/preserve-manual-memoization
+  215:5  warning  React Hook useCallback has a missing dependency: 'saveCurrentSession'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/exhaustive-deps
+
+D:\hackhathon\AI-Money-Mentor-\src\types\next-auth.d.ts
+  1:8  warning  'NextAuth' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 16 problems (8 errors, 8 warnings)
+
