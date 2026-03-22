@@ -1,0 +1,27 @@
+# Core Framework
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+python-multipart>=0.0.7
+
+# Streamlit Frontend
+streamlit>=1.30.0
+
+# PDF Extraction
+PyMuPDF>=1.23.0
+pytesseract>=0.3.10
+Pillow>=9.0.0
+pdf2image>=1.16.0
+
+# LLM Integration (Open Source via Groq)
+groq>=0.5.0
+
+# Data Validation & Utilities
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+pandas>=2.0.0
+
+# Visualization
+plotly>=5.18.0
+
+# HTTP Client
+httpx>=0.25.0
