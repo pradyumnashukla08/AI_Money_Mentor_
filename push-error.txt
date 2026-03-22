@@ -1,0 +1,32 @@
+remote: error: GH013: Repository rule violations found for refs/heads/feat/native-ui-integration.        
+remote: 
+remote: - GITHUB PUSH PROTECTION        
+remote:   ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:     Resolve the following violations before pushing again        
+remote: 
+remote:     - Push cannot contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to resolve a blocked push        
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push        
+remote:             
+remote:             
+remote:       ΓÇöΓÇö Groq API Key ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:        locations:        
+remote:          - commit: d833fe8efcce2038bc979d62756c4104f03d1e6b        
+remote:            path: backend/auditor_agent/config.py:24        
+remote:          - commit: d833fe8efcce2038bc979d62756c4104f03d1e6b        
+remote:            path: src/app/api/agents/auditor/route.ts:13        
+remote:          - commit: d833fe8efcce2038bc979d62756c4104f03d1e6b        
+remote:            path: src/lib/agents/managerAgent.ts:36        
+remote:          - commit: d833fe8efcce2038bc979d62756c4104f03d1e6b        
+remote:            path: src/lib/agents/managerAgent.ts:80        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/pradyumnashukla08/AI-Money-Mentor-/security/secret-scanning/unblock-secret/3BIITrC0PuTnktxSLDbqY5kpw0F        
+remote:             
+remote: 
+remote: 
+To https://github.com/pradyumnashukla08/AI-Money-Mentor-.git
+ ! [remote rejected] feat/native-ui-integration -> feat/native-ui-integration (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/pradyumnashukla08/AI-Money-Mentor-.git'
