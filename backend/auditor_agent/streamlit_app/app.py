@@ -24,7 +24,7 @@ st.set_page_config(
 )
 
 # ── Constants ────────────────────────────────────────────────────────────────
-API_BASE = "http://localhost:8000"
+API_BASE = "http://localhost:8001"
 
 # ── Global CSS ───────────────────────────────────────────────────────────────
 st.markdown("""

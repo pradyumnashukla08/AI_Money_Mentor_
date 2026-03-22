@@ -39,7 +39,7 @@ with st.sidebar:
     st.caption("Powered by Google : Gemma 3 12B")
     st.caption("Financial Logic: NumPy + Pandas")
 
-API_BASE = "http://localhost:8000"
+API_BASE = "http://localhost:8001"
 
 def life_event_page():
     st.title("🧬 Life Event Advisor")
