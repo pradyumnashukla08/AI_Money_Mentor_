@@ -1,0 +1,2 @@
+src/app/api/agents/strategist/route.ts(46,37): error TS2339: Property 'monthlyExpenses' does not exist on type '{ id: string; userId: string; createdAt: Date; updatedAt: Date; monthlyIncome: number; totalAssets: number; riskTolerance: string; goals: string; }'.
+src/app/api/agents/strategist/route.ts(47,36): error TS2339: Property 'currentSavings' does not exist on type '{ id: string; userId: string; createdAt: Date; updatedAt: Date; monthlyIncome: number; totalAssets: number; riskTolerance: string; goals: string; }'.

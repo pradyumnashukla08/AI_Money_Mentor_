@@ -1,0 +1,26 @@
+
+> ai-money-mentor@0.1.0 lint
+> eslint
+
+
+D:\hackhathon\AI-Money-Mentor-\src\app\api\chat\route.ts
+  10:52  warning  'currentAgent' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  39:48  error    Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+
+D:\hackhathon\AI-Money-Mentor-\src\app\search\page.tsx
+  3:8  warning  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\hackhathon\AI-Money-Mentor-\src\context\ChatContext.tsx
+   4:10  warning  'routeMessage' is defined but never used                @typescript-eslint/no-unused-vars
+   5:10  warning  'AGENTS' is defined but never used                      @typescript-eslint/no-unused-vars
+  55:10  warning  'getAgentResponse' is defined but never used            @typescript-eslint/no-unused-vars
+  68:26  warning  'setCurrentSession' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  70:10  warning  'messageCount' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+D:\hackhathon\AI-Money-Mentor-\src\lib\agents\managerAgent.ts
+  3:23  warning  'HumanMessage' is defined but never used  @typescript-eslint/no-unused-vars
+  3:52  warning  'AIMessage' is defined but never used     @typescript-eslint/no-unused-vars
+  5:10  warning  'AGENTS' is defined but never used        @typescript-eslint/no-unused-vars
+
+Γ£û 11 problems (1 error, 10 warnings)
+
