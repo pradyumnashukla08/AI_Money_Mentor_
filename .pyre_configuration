@@ -1,0 +1,10 @@
+{
+  "source_directories": ["."],
+  "exclude": [
+    "agent/.*",
+    "engine/.*",
+    "llm/.*",
+    "api/.*",
+    "models/.*"
+  ]
+}
