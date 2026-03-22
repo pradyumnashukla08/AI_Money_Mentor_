@@ -203,6 +203,8 @@ def tax_wizard_page():
                 deduction_80d    = st.number_input("80D (Health Insurance) (₹)", min_value=0, step=1000, value=25000)
                 deduction_80ccd1b= st.number_input("80CCD(1B) NPS (₹, max 50k)", min_value=0, max_value=50000, step=5000, value=50000)
                 deduction_80ccd2 = st.number_input("80CCD(2) Employer NPS (₹)", min_value=0, step=5000, value=0)
+                deduction_80g    = st.number_input("80G (Donations) (₹)", min_value=0, step=5000, value=0)
+                deduction_80eea  = st.number_input("80EEA (Housing Interest) (₹, max 1.5L)", min_value=0, max_value=150000, step=10000, value=0)
                 home_loan        = st.number_input("Home Loan Interest 24(b) (₹, max 2L)", min_value=0, max_value=200000, step=10000, value=0)
                 tds_deducted     = st.number_input("TDS Already Deducted (₹)", min_value=0, step=5000, value=90000)
 
@@ -219,6 +221,8 @@ def tax_wizard_page():
                 "deduction_80d": deduction_80d,
                 "deduction_80ccd1b": deduction_80ccd1b,
                 "deduction_80ccd2": deduction_80ccd2,
+                "deduction_80g": deduction_80g,
+                "deduction_80eea": deduction_80eea,
                 "deduction_home_loan_interest": home_loan,
                 "tds_deducted": tds_deducted,
             }
@@ -280,6 +284,16 @@ def _render_tax_results(extracted: dict, comparison: dict):
         <strong>✅ Recommended: {recommended} Regime</strong><br>
         <small>{reason}</small>
     </div>""", unsafe_allow_html=True)
+
+    # ── Optimization Strategy ────────────────────────────────────────────────
+    opt = comparison.get("optimization_strategy")
+    if opt:
+        st.markdown(f"""
+        <div class="recommend-box warn">
+            <strong>🚀 Tax Optimization Opportunity</strong><br>
+            {opt['message']}<br>
+            <small>Investing an extra <b>{fmt_inr(opt['additional_investment_needed'])}</b> in <b>{opt['investment_category']}</b> could save you <b>{fmt_inr(opt['potential_savings'])}</b>.</small>
+        </div>""", unsafe_allow_html=True)
 
     # ── Bar chart comparison ─────────────────────────────────────────────────
     fig = go.Figure()
@@ -506,6 +520,18 @@ def _render_health_score(result: dict):
             st.markdown("**⚠️ Focus Areas**")
             for c in result["top_concerns"]:
                 st.markdown(f"🔴 {c}")
+
+    # ── Actionable Roadmap ───────────────────────────────────────────────────
+    if result.get("actionable_roadmap"):
+        st.markdown('<div class="section-title">🚀 Your 30-Day Actionable Roadmap</div>', unsafe_allow_html=True)
+        cols = st.columns(3)
+        for i, task in enumerate(result["actionable_roadmap"]):
+            with cols[i]:
+                st.markdown(f"""
+                <div class="metric-card" style="height:100%">
+                    <h3 style="color:#2ecc71">Task {i+1}</h3>
+                    <p style="font-size:0.95rem;margin-top:0.5rem">{task}</p>
+                </div>""", unsafe_allow_html=True)
 
     # ── Radar chart ──────────────────────────────────────────────────────────
     st.markdown('<div class="section-title">📡 Financial Health Radar</div>', unsafe_allow_html=True)

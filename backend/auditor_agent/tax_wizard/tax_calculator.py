@@ -7,7 +7,7 @@ then returns a clean side-by-side comparison with a recommendation.
 """
 
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 import math
 
 from auditor_agent.config import settings
@@ -46,6 +46,17 @@ class TaxResult:
 
 
 @dataclass
+class OptimizationStrategy:
+    """Actionable steps to reduce tax further."""
+    current_regime: str
+    target_regime: str
+    additional_investment_needed: float
+    investment_category: str           # "80C" or "80CCD(1B)"
+    potential_savings: float
+    is_feasible: bool                  # True if below caps
+    message: str
+
+@dataclass
 class TaxComparison:
     """Side-by-side comparison of Old vs. New regime."""
     old_regime: TaxResult
@@ -53,6 +64,7 @@ class TaxComparison:
     recommended_regime: str            # "Old" or "New"
     savings_with_recommended: float    # Absolute ₹ savings
     recommendation_reason: str
+    optimization_strategy: Optional[OptimizationStrategy] = None
 
 
 # ── Core calculation helpers ────────────────────────────────────────────────
@@ -153,6 +165,8 @@ def calculate_old_regime(data: Form16Data) -> TaxResult:
         + deduction_80ccd2
         + deduction_80tta
         + deduction_80e
+        + data.deduction_80g
+        + min(data.deduction_80eea, 150_000) # 80EEA cap ₹1.5L
         + home_loan_interest
         + other_ded
     )
@@ -244,16 +258,62 @@ def calculate_new_regime(data: Form16Data) -> TaxResult:
 
 
 # ── Comparison ─────────────────────────────────────────────────────────────
+def calculate_optimization(data: Form16Data, comparison: TaxComparison) -> Optional[OptimizationStrategy]:
+    """
+    If New regime is better, check if additional 80C or 80CCD(1B) 
+    investments can tip the scale back to Old regime for more savings.
+    """
+    if comparison.recommended_regime == "Old":
+        return None
+
+    # New is currently better. Let's see if we can "bailout" to Old.
+    tax_diff = comparison.old_regime.total_tax_payable - comparison.new_regime.total_tax_payable
+    
+    # 1. Check NPS 80CCD(1B) room (Cap ₹50k)
+    current_80ccd1b = min(data.deduction_80ccd1b, 50_000)
+    remaining_80ccd1b_room = 50_000 - current_80ccd1b
+    
+    # 2. Check 80C room (Cap ₹1.5L)
+    current_80c = min(data.deduction_80c, 150_000)
+    remaining_80c_room = 150_000 - current_80c
+    
+    if remaining_80ccd1b_room <= 0 and remaining_80c_room <= 0:
+        return None # No room to optimize further via these sections
+
+    # Heuristic: If we invest X more in 80CCD1B, we save X * marginal_rate
+    # Find marginal rate for Old regime
+    marginal_rate = 0.0
+    for limit, rate in settings.OLD_REGIME_SLABS:
+        if comparison.old_regime.taxable_income <= limit:
+            marginal_rate = rate
+            break
+    if marginal_rate == 0: marginal_rate = 0.05 # Default to lowest if not found
+    
+    # Try NPS first as it's often the easiest "extra" deduction
+    if remaining_80ccd1b_room > 0:
+        # How much investment needed to cover the tax_diff?
+        # investment * marginal_rate * (1 + cess) ≈ tax_diff
+        needed = tax_diff / (marginal_rate * 1.04)
+        if needed <= remaining_80ccd1b_room:
+            return OptimizationStrategy(
+                current_regime="New",
+                target_regime="Old",
+                additional_investment_needed=round(needed, 0),
+                investment_category="NPS (Section 80CCD(1B))",
+                potential_savings=round(tax_diff, 0),
+                is_feasible=True,
+                message=(
+                    f"By investing an additional ₹{needed:,.0f} in NPS, you can switch to the Old Regime "
+                    f"and potentially save more in total taxes than the New Regime."
+                )
+            )
+
+    return None
 
 def compare_regimes(data: Form16Data) -> TaxComparison:
     """
     Calculate Old and New regime taxes, compare them, and recommend the best one.
-
-    Args:
-        data: Validated Form16Data model.
-
-    Returns:
-        TaxComparison with both results and a clear recommendation.
+    Also adds an optimization strategy if applicable.
     """
     old = calculate_old_regime(data)
     new = calculate_new_regime(data)
@@ -264,26 +324,26 @@ def compare_regimes(data: Form16Data) -> TaxComparison:
         reason = (
             f"The Old Regime saves you ₹{savings:,.0f} because your total deductions "
             f"(₹{old.total_deductions:,.0f}) exceed the benefit provided by the New Regime's "
-            f"lower slabs. High investments in 80C, HRA exemption, and NPS make the Old Regime "
-            f"more advantageous for you."
+            f"lower slabs."
         )
     else:
         recommended = "New"
         savings = round(old.total_tax_payable - new.total_tax_payable, 2)
         reason = (
             f"The New Regime saves you ₹{savings:,.0f}. Your current deduction claims "
-            f"(₹{old.total_deductions:,.0f}) are not large enough to offset the benefit of "
-            f"lower slab rates in the New Regime. Consider maximising 80C and NPS next year "
-            f"to evaluate switching back."
+            f"(₹{old.total_deductions:,.0f}) are not enough to beat the lower New Regime rates."
         )
 
-    return TaxComparison(
+    comparison = TaxComparison(
         old_regime=old,
         new_regime=new,
         recommended_regime=recommended,
         savings_with_recommended=savings,
         recommendation_reason=reason,
     )
+    
+    comparison.optimization_strategy = calculate_optimization(data, comparison)
+    return comparison
 
 
 # ── CLI demo ────────────────────────────────────────────────────────────────

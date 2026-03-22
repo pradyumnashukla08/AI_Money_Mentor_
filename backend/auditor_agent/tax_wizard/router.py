@@ -63,6 +63,7 @@ def _comparison_to_dict(comparison: TaxComparison) -> dict:
         "recommended_regime": comparison.recommended_regime,
         "savings_with_recommended": comparison.savings_with_recommended,
         "recommendation_reason": comparison.recommendation_reason,
+        "optimization_strategy": asdict(comparison.optimization_strategy) if comparison.optimization_strategy else None,
     }
 
 
@@ -133,6 +134,8 @@ class ManualTaxInput(BaseModel):
     deduction_80ccd2: float = Field(default=0.0)
     deduction_80tta: float = Field(default=0.0, le=10_000)
     deduction_80e: float = Field(default=0.0)
+    deduction_80g: float = Field(default=0.0)
+    deduction_80eea: float = Field(default=0.0)
     deduction_home_loan_interest: float = Field(default=0.0)
     other_deductions: float = Field(default=0.0)
     tds_deducted: float = Field(default=0.0)

@@ -55,6 +55,8 @@ class Form16Data(BaseModel):
     deduction_80ccd2: float = Field(default=0.0, description="Employer NPS contribution u/s 80CCD(2)")
     deduction_80tta: float = Field(default=0.0, description="Savings account interest u/s 80TTA")
     deduction_80e: float = Field(default=0.0, description="Education loan interest u/s 80E")
+    deduction_80g: float = Field(default=0.0, description="Donations to charitable institutions u/s 80G")
+    deduction_80eea: float = Field(default=0.0, description="Interest on affordable housing loan u/s 80EEA")
     deduction_home_loan_interest: float = Field(default=0.0, description="Home loan interest u/s 24(b)")
     other_deductions: float = Field(default=0.0, description="Any other declared deductions")
 
@@ -103,6 +105,8 @@ Return a JSON object with exactly these keys:
   "deduction_80ccd2": 0.0,
   "deduction_80tta": 0.0,
   "deduction_80e": 0.0,
+  "deduction_80g": 0.0,
+  "deduction_80eea": 0.0,
   "deduction_home_loan_interest": 0.0,
   "other_deductions": 0.0,
   "tds_deducted": 0.0,

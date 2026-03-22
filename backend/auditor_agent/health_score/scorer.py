@@ -48,6 +48,7 @@ class HealthScoreResult:
     top_strengths: List[str]        # Names of top 2 dimensions
     top_concerns: List[str]         # Names of bottom 2 dimensions
     executive_summary: str          # 3–4 sentence LLM summary
+    actionable_roadmap: List[str]   # 3 specific, time-bound financial tasks
 
 
 # ── Scoring helpers ─────────────────────────────────────────────────────────
@@ -140,7 +141,8 @@ Return ONLY this JSON (no markdown, no code fences):
   "Investments & Savings": "...",
   "Goal Clarity": "...",
   "Spending Habits": "...",
-  "executive_summary": "..."
+  "executive_summary": "...",
+  "actionable_roadmap": ["Task 1", "Task 2", "Task 3"]
 }}"""
 
     try:
@@ -171,8 +173,15 @@ Return ONLY this JSON (no markdown, no code fences):
             Dimension.SPENDING_HABITS: data.get("Spending Habits", "Track spending and maintain a monthly budget."),
         }
         summary = data.get("executive_summary", f"{name}, your financial health has room to grow. Focus on the areas highlighted above.")
+        roadmap = data.get("actionable_roadmap", [])
+        if not roadmap:
+            roadmap = [
+                "Build an emergency fund covering 3 months of expenses.",
+                "Review your insurance policies for adequate coverage.",
+                "Start a small SIP in an index fund to begin wealth creation."
+            ]
 
-        return dim_insights, summary
+        return dim_insights, summary, roadmap[:3]
 
     except Exception as exc:
         logger.error("LLM insight generation failed: %s", exc)
@@ -189,7 +198,12 @@ Return ONLY this JSON (no markdown, no code fences):
             "Focus on strengthening your weakest dimensions first for maximum impact. "
             "Small, consistent improvements compound significantly over time."
         )
-        return default_insights, fallback_summary
+        fallback_roadmap = [
+            "Calculate your exact monthly expenses to refine your emergency fund goal.",
+            "Check if your employer's health insurance is sufficient for your family.",
+            "Identify one 'want' expense you can cut this month to increase your savings."
+        ]
+        return default_insights, fallback_summary, fallback_roadmap
 
 
 # ── Master scorer ────────────────────────────────────────────────────────────
@@ -210,7 +224,7 @@ def calculate_health_score(answers: OnboardingAnswers) -> HealthScoreResult:
     dim_scores = _compute_dimension_raw_scores(answers)
 
     # Step 2: Generate LLM insights per dimension
-    dim_insights, executive_summary = _generate_insights_with_llm(
+    dim_insights, executive_summary, actionable_roadmap = _generate_insights_with_llm(
         name=name,
         dimension_scores=dim_scores,
         monthly_income=answers.monthly_income,
@@ -259,4 +273,5 @@ def calculate_health_score(answers: OnboardingAnswers) -> HealthScoreResult:
         top_strengths=top_strengths,
         top_concerns=top_concerns,
         executive_summary=executive_summary,
+        actionable_roadmap=actionable_roadmap,
     )

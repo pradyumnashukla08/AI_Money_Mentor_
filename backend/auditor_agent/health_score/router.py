@@ -33,6 +33,7 @@ def _result_to_dict(result: HealthScoreResult) -> dict:
         "overall_band_label": result.overall_band_label,
         "overall_band_color": result.overall_band_color,
         "executive_summary": result.executive_summary,
+        "actionable_roadmap": result.actionable_roadmap,
         "top_strengths": result.top_strengths,
         "top_concerns": result.top_concerns,
         "dimension_scores": [
