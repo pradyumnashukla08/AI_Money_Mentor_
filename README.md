@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Portfolio Mentor (XIRR Agent)
 
-## Getting Started
+## Overview
+The **AI Portfolio Mentor** is an intelligent agent designed to help investors calculate their true annualized return (XIRR) from their mutual fund or stock statements. It provides a sleek, professional web interface to instantly analyze cash flows and deliver personalized portfolio health insights.
 
-First, run the development server:
+## How It Works
+The agent accepts a simple statement of your historical transactions (currently optimized for CSV) and automatically determines the Extended Internal Rate of Return (XIRR) based on your historical cash outflows (SIPs/investments) and your current portfolio valuation.
 
+### File Structure & Roles
+* **`app.py`**: The frontend user interface built using the Streamlit framework. This handles the premium dark-themed web app, the drag-and-drop file uploader, and the interactive metrics cards.
+* **`xirr_calculator.py`**: The mathematical brain of the agent. It leverages `pandas` for grouping dates/amounts and `pyxirr` for running the complex financial math to calculate the exact annualized return rate.
+* **`portfolio_parser.py`**: A secondary tool using `PyPDF2` to extract raw text from PDF files. It serves as the foundation for scraping and parsing native PDF broker statements in the future.
+* **`requirements.txt`**: The library roadmap that tells Python exactly which packages are required to run this agent.
+
+---
+
+## 🚀 Setup & Implementation Guide
+
+If you are cloning this project or downloading it for the first time, follow these steps to get the agent running on your local machine:
+
+### 1. Install Requirements
+Open a terminal in the project folder and install the necessary Python libraries by running:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pip install -r requirements.txt
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Launch the Application
+Start the agent's web server by executing:
+```bash
+streamlit run app.py
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Use the Agent
+1. Open the `localhost` URL provided in your terminal in any web browser.
+2. Under the **XIRR Calculator** tab, drop your investment statement (`.csv`) into the uploader box. (A `dummy_statement.csv` template exists for testing).
+3. Type in your **Current Portfolio Value**.
+4. The agent will instantly compute and display your total invested amount, current valuation, and exactly what your XIRR percentage is, along with a custom analytical recommendation!
