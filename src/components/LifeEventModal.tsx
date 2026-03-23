@@ -43,7 +43,10 @@ export default function LifeEventModal({ isOpen, onClose, onComplete }: LifeEven
 
       const res = await fetch('http://localhost:8000/strategist/life-event', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-API-Key': process.env.NEXT_PUBLIC_BACKEND_API_KEY || 'dev-secret-key-12345'
+        },
         body: JSON.stringify(payload)
       });
 

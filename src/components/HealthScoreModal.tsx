@@ -26,7 +26,9 @@ export default function HealthScoreModal({ isOpen, onClose, onComplete }: Health
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
-      fetch('http://127.0.0.1:8000/api/health-score/questions')
+      fetch('http://127.0.0.1:8000/api/health-score/questions', {
+        headers: { 'X-API-Key': process.env.NEXT_PUBLIC_BACKEND_API_KEY || 'dev-secret-key-12345' }
+      })
         .then(res => res.json())
         .then(data => {
           setQuestions(data.questions || []);
@@ -62,7 +64,10 @@ export default function HealthScoreModal({ isOpen, onClose, onComplete }: Health
       
       const res = await fetch('http://127.0.0.1:8000/api/health-score/calculate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-API-Key': process.env.NEXT_PUBLIC_BACKEND_API_KEY || 'dev-secret-key-12345'
+        },
         body: JSON.stringify(payload)
       });
       
