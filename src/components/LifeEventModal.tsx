@@ -30,6 +30,7 @@ export default function LifeEventModal({ isOpen, onClose, onComplete }: LifeEven
     try {
       const payload = {
         profile: {
+          name: "User",
           age: 30,
           monthly_income: Number(formData.monthly_income),
           monthly_expenses: Number(formData.monthly_expenses),
@@ -40,7 +41,7 @@ export default function LifeEventModal({ isOpen, onClose, onComplete }: LifeEven
         event_text: formData.event_text
       };
 
-      const res = await fetch('http://127.0.0.1:8000/strategist/life-event', {
+      const res = await fetch('http://localhost:8000/strategist/life-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

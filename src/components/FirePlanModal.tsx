@@ -32,6 +32,7 @@ export default function FirePlanModal({ isOpen, onClose, onComplete }: FirePlanM
     try {
       const payload = {
         profile: {
+          name: "User",
           age: formData.age,
           monthly_income: formData.monthly_income,
           monthly_expenses: formData.monthly_expenses,
@@ -46,7 +47,7 @@ export default function FirePlanModal({ isOpen, onClose, onComplete }: FirePlanM
         }
       };
 
-      const res = await fetch('http://127.0.0.1:8000/strategist/fire-plan', {
+      const res = await fetch('http://localhost:8000/strategist/fire-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
